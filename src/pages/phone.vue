@@ -34,10 +34,10 @@
       <el-card style="background-color: #F2F6FC">
         <el-row>
           <el-col :span="5">
-            <el-image src="https://img12.360buyimg.com/n7/jfs/t1/185831/6/16692/188898/6103e868E50d283d8/ae27ec51a20a6155.jpg"></el-image>
+            <el-image src="https://img12.360buyimg.com/n7/jfs/t1/185831/6/16692/188898/6103e868E50d283d8/ae27ec51a20a6155.jpg" @click="phoneDetail"></el-image>
           </el-col>
           <el-col :span="1"><div class="none"></div></el-col>
-          <el-col :span="5">
+          <el-col :span="5">phoneDetail
             <el-image src="https://img13.360buyimg.com/n7/jfs/t1/193120/31/19813/199057/6124c7aaEfd2336c0/b1af1ddc30e033d1.jpg"></el-image>
           </el-col>
           <el-col :span="1"><div class="none"></div></el-col>
@@ -115,11 +115,6 @@ export default {
       return dynamicTags
     }
   },
-  watch: {
-    dynamicTags(){
-
-    }
-  },
   methods: {
 
     handleClose(tag) {
@@ -131,7 +126,9 @@ export default {
         this.$refs.saveTagInput.$refs.input.focus();
       });
     },
-
+    phoneDetail() {
+      this.$router.push({path: '/detail'})
+    },
     handleInputConfirm() {
       let inputValue = this.inputValue;
       if (inputValue) {

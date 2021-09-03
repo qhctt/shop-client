@@ -1,7 +1,6 @@
 <template>
   <div id="layout">
     <navigation></navigation>
-    <indexContent></indexContent>
   </div>
 </template>
 

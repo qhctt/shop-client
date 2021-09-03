@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div id="indexContent">
     <el-row class="top30">
       <el-card>

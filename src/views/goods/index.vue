@@ -214,8 +214,8 @@ export default {
       this.imgUl.forEach((item,index1) =>{
         if(index1 === index){
           item.checked = true
-          // //不写这句，vue实例就不会跟着变化
-          // this.checkedImgUrl = item.url
+          //不写这句，vue实例就不会跟着变化
+          this.checkedImgUrl = item.url
         }
       })
     },
