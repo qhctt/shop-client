@@ -55,18 +55,20 @@
                 <span style="color: #909399;">评论于 {{comment.date}}</span>
             </el-col>
           </el-row>
-          <p style="margin-right: 50px">{{comment.content.text}}</p>
-          <div v-if="comment.hasImg">
-            <div v-for="(img,imgIndex) in comment.context.imgList" :key="imgIndex" class="img_li" @click="checkImg(commentIndex,imgIndex)">
-              <el-tag class="pdr5" :class="{img_li_checked: img.checked,img_li_not_checked: !img.checked}" style="height: 61px;"
-                      type="info"
-                      effect="plain"
-                      size="medium">
-                <el-image :src="img.url" style="width: 55px; height:55px"></el-image>
-              </el-tag>
+          <el-row style="text-align: left">
+            <p style="margin-right: 50px">{{comment.content.text}}</p>
+            <div v-if="comment.hasImg">
+              <div v-for="(img,imgIndex) in comment.content.imgList" :key="imgIndex" class="img_li" @click="checkImg(commentIndex,imgIndex)">
+                <el-tag class="pdr5" :class="{img_li_checked: img.checked,img_li_not_checked: !img.checked}" style="height: 61px;"
+                        type="info"
+                        effect="plain"
+                        size="medium">
+                  <el-image :src="img.url" style="width: 55px; height:55px"></el-image>
+                </el-tag>
+              </div>
+              <el-image :src="comment.content.checkedImgUrl" style="width: 300px;height: 400px" :previewSrcList="previewSrcList"></el-image>
             </div>
-            <el-image :src="comment.content.imgList" style="width: 300px" :previewSrcList="previewSrcList"></el-image>
-          </div>
+          </el-row>
           <div style="text-align: left">
             <el-tag style="border: 0" effect="plain" type="danger" size="medium"><i class="el-icon-star-off"></i>{{comment.likes}}</el-tag>
             <el-tag style="border: 0" effect="plain" type="success" size="medium"><i class="el-icon-chat-dot-round"></i>{{comment.comments}}</el-tag>
@@ -79,10 +81,14 @@
 
 <script>
 import {validatenull} from "../../utils/validate";
+// import {videoPlayer } from 'vue-video-player'
+import 'video.js/dist/video-js.css'
 
 export default {
   name: "goodsComments",
-  components: {},
+  components: {
+    // videoPlayer
+  },
   props: ['id'],
   data() {
     return {
@@ -174,7 +180,7 @@ export default {
             "https://img30.360buyimg.com/shaidan/s616x405_jfs/t1/192153/39/17522/129475/610fed97E64476f11/86206eae0ff981fa.jpg",
             "https://img30.360buyimg.com/shaidan/s616x405_jfs/t1/193765/3/17329/94623/610fed98E8232ffba/97a6754a3ebc06ba.jpg",
             "https://img30.360buyimg.com/shaidan/s616x405_jfs/t1/203367/37/405/73057/610fed98E917a53c4/95b28983596825e1.jpg",
-            "https://img30.360buyimg.com/shaidan/s616x405_jfs/t1/191679/39/17305/104465/610fed99E6e5e814d/b4085b826f4273f2.jpg",
+            "https://img30.360buyimg.com/shaidan/s616x405_jfs/t1/191679/39/17305/104465/610fed99E6e5e814d/b4085b826f4273f2.jpg"
           ],
           videoUrl: 'https://jvod.300hu.com/vod/product/300da0a1-61fd-4377-b3fd-672f65d9e8e3/395e0ae43c934494a6c69b8651821ba6.mp4?source=2&h265=h265/18799/de87578da42f4927b2c437ba027129fa.mp4'
         }
@@ -185,7 +191,7 @@ export default {
       if(!validatenull(item.content.imgList)){
         hasImg = true
         let imgList= []
-        for(let i = 0;i<item.content.imgList.length; i++){
+        for(let i = 0; i<item.content.imgList.length; i++){
           let img = {url: item.content.imgList[i],checked: false}
           i === 0 ? img.checked = true : img.checked = false
           imgList.push(img)
@@ -201,5 +207,13 @@ export default {
 </script>
 
 <style scoped>
-
+  .img_li{
+    list-style-type: none; float: left; padding: 5px; border: 2px solid #ffffff;
+  }
+  .img_li_checked{
+    border: 2px solid #F56C6C;
+  }
+  .img_li_not_checked{
+    border: 2px solid #ffffff
+  }
 </style>

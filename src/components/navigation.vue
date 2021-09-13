@@ -29,14 +29,19 @@
 <!--    登录注册模板框架-->
     <el-dialog
         :visible.sync="passportDialogVisible"
+        @keyup.enter.native="login"
         width="30%">
       <el-form>
         <el-form-item label="账号">
           <el-input v-model="loginForm.username"></el-input>
         </el-form-item>
         <el-form-item label="密码">
-          <el-input v-model="loginForm.password"></el-input>
+          <el-input  type="password" v-model="loginForm.password"></el-input>
         </el-form-item>
+        <template>
+          <el-checkbox v-model="rememberPassword" label="1">记住密码</el-checkbox>
+          <el-checkbox v-model="autoLogin" label="2">自动登陆</el-checkbox>
+        </template>
         <el-form-item>
           <el-button type="primary" @click="login">登录</el-button>
           <el-button >注册</el-button>
@@ -81,10 +86,13 @@ export default {
       searchInput: '',
       timeout:  null,
       passportDialogVisible: false,
-      loginForm: {
-        username: '',
-        password: ''
-      },
+      // loginForm: {
+      //   username: '',
+      //   password: ''
+      // },
+      rememberPassword: this.$store.getters.savedAccount.save,
+      autoLogin: this.$store.getters.savedAccount.autoLogin,
+      loginForm: this.$store.getters.savedAccount.account,
       fullscreenLoading :false
     }
   },
@@ -160,12 +168,8 @@ export default {
     },
     login(){
       this.fullscreenLoading = true
-      this.$store.dispatch("login").then(() =>{
+      this.$store.dispatch("login",this.loginForm).then(() =>{
         this.fullscreenLoading = false
-        this.$message({
-          type: 'success',
-          message: '登录成功'
-        });
       })
       this.passportDialogVisible = false
     },
@@ -175,15 +179,17 @@ export default {
       this.$store.dispatch("logout").then(() =>{
         this.fullscreenLoading = false
         this.drawer = false
-        this.$message({
-          type: 'success',
-          message: '已退出登录'
-        });
+        // this.$message({
+        //   type: 'success',
+        //   message: '已退出登录'
+        // });
       })
+      this.passportDialogVisible=false
     },
   },
   mounted() {
     this.restaurants = this.loadAll();
+    if(!this.isLogin&&this.autoLogin) this.login()
   },
   computed: {
     userInfo(){
@@ -196,6 +202,19 @@ export default {
       return this.$store.getters.shopCart
     }
 
+  },
+  watch:{
+    rememberPassword(val){
+      let savedAccount = {save: val,account: {},autoLogin: this.$store.getters.savedAccount.autoLogin}
+      this.$store.commit('SAVE_ACCOUNT',savedAccount)
+    },
+    autoLogin(val){
+      if(val){
+        this.rememberPassword=true
+      }
+      let savedAccount = {save: this.$store.getters.savedAccount.save,account: {},autoLogin: val}
+      this.$store.commit('SAVE_ACCOUNT',savedAccount)
+    }
   }
 }
 </script>
